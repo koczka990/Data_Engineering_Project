@@ -19,9 +19,9 @@ with open(file_path, 'r') as file:
         for obj in file:
                 # load the read text into json onject
                 reddit = json.loads(obj)
-                print(reddit)
                 # insert into db
                 result = collection.insert_one(reddit)
+                # check insertion result
                 if result.acknowledged:
                      print("Insertion successful. Inserted document ID:", result.inserted_id)
                 else:

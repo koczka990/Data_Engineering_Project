@@ -34,7 +34,36 @@ services:
       - SPARK_MASTER_URL=spark://spark-master:7077
     networks:
       - spark-network
+    
+   
+  mongodb-1:
+    image: bitnami/mongodb:latest
+    deploy:
+      replicas: 1
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-volume1:/var/lib/mongodb
+    networks:
+      - spark-network
+
+  mongodb-2:
+    image: bitnami/mongodb:latest
+    deploy:
+      replicas: 1
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb-volume2:/var/lib/mongodb
+    networks:
+      - spark-network
 
 networks:
   spark-network:
     driver: overlay
+
+volumes:
+  mongodb-volume1:
+    driver: local
+  mongodb-volume2:
+    driver: local

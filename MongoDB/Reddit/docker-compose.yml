@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  spark-master:
+    image: bitnami/spark:latest
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == gp12-mongoworker2
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_MODE=master
+    networks:
+      - spark-network
+
+ spark-worker:
+    image: bitnami/spark:latest
+    deploy:
+      replicas: 1
+    networks:
+      - my-network
+    
+  mongo-master:
+    image: bitnami/mongodb:latest
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == gp12-playground
+    ports:
+      - "27017:27017"
+    networks:
+      - spark-network
+
+networks:
+  spark-network:
+    driver: overlay
